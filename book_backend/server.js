@@ -1,13 +1,20 @@
 require('dotenv').config({ path: './env' });
-const connectDB = require('./db/index');
-const { app } = require('./app');
+const express = require('express');
+const mongoose = require('mongoose');
+const bookRoutes = require('./routes/book.Routes');
+const PORT = process.env.PORT || 3000;
 
-connectDB()
-  .then(() => {
-    app.listen(process.env.PORT || 8000, () => {
-      console.log(`🚀 Server is running on port ${process.env.PORT || 8000}`);
-    });
-  })
-  .catch((err) => {
-    console.error('❌ MongoDB connection failed!', err);
-  });
+const app = express();
+app.use(express.json());
+app.use('/books', bookRoutes);
+
+
+mongoose.connect('mongodb://127.0.0.1:27017/bookbarterdb')
+  .then(() => console.log('✅ MongoDB connected'))
+  .catch((err) => console.error('❌ Connection error:', err));
+
+
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
