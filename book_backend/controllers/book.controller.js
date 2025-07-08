@@ -2,10 +2,10 @@ const Book = require("../models/book.model");
 
 const addBook = async (req, res) => {
   try {
-    const { title, author, rating, genre, availableForExchange, location, imageUrl } = req.body;
+    const { title, author, rating, genre, availableForExchange, location, imageUrl , owner } = req.body;
 
     // Basic validation
-    if (!title || !author || !location) {
+    if (!title || !author || !location || !owner) {
       return res.status(400).json({ message: "Title, Author, and Location are required." });
     }
 
@@ -16,7 +16,8 @@ const addBook = async (req, res) => {
       genre,
       availableForExchange,
       location,
-      imageUrl
+      imageUrl,
+      owner
     });
 
     const savedBook = await newBook.save();
