@@ -17,7 +17,7 @@ const addBook = async (req, res) => {
       availableForExchange,
       location,
       imageUrl,
-      owner
+      owner:req.user._id
     });
 
     const savedBook = await newBook.save();
