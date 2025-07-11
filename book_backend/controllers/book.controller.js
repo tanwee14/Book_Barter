@@ -2,16 +2,17 @@ const Book = require("../models/book.model");
 
 const addBook = async (req, res) => {
   try {
-    const { title, author, rating, genre, availableForExchange, location, imageUrl , owner } = req.body;
+    const { title, author, rating, genre, availableForExchange, location, imageUrl , owner ,description} = req.body;
 
     // Basic validation
-    if (!title || !author || !location || !owner) {
+    if (!title || !author || !location || !owner || !description) {
       return res.status(400).json({ message: "Title, Author, and Location are required." });
     }
 
     const newBook = new Book({
       title,
       author,
+      description,
       rating,
       genre,
       availableForExchange,
@@ -51,7 +52,7 @@ const getBookById = async(req,res)=>{
 
 const changeBookDescription=async(req,res)=>{
   try{
-    const description=req.body;
+    const {description}=req.body;
     const {id} = req.params;
     if(!description){
       return res.status(404).json({message:"Write desc first"});
@@ -68,7 +69,7 @@ const changeBookDescription=async(req,res)=>{
 
     res.status(200).json({ message: "Description updated", book: updatedBook });
   }
-  catch{
+  catch(err){
     res.status(500).json({ error: 'Server error', details: err.message });
   }
 }
