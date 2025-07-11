@@ -49,4 +49,28 @@ const getBookById = async(req,res)=>{
   }
 }
 
-module.exports = { addBook , getBookById};
+const changeBookDescription=async(req,res)=>{
+  try{
+    const description=req.body;
+    const {id} = req.params;
+    if(!description){
+      return res.status(404).json({message:"Write desc first"});
+    }
+    const updatedBook = await Book.findByIdAndUpdate(
+      id,
+      { description },
+      { new: true }
+    );
+
+    if (!updatedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.status(200).json({ message: "Description updated", book: updatedBook });
+  }
+  catch{
+    res.status(500).json({ error: 'Server error', details: err.message });
+  }
+}
+
+module.exports = { addBook , getBookById , changeBookDescription};
